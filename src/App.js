@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import Home from "./Pages/Home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Contact from "./Pages/Contact";
+import Equipment from "./Pages/Equipment";
+import Driller from "./Components/Driller";
+import Login from "./Components/Login";
+import SignUp from "./Components/SignUp";
+import Pop from "./Components/Pop";
+import Cart from "./Pages/Cart";
+import { UserProvider } from "./UserContext";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/signup" element={<SignUp />}></Route>
+          <Route path="/contact" element={<Contact />}></Route>
+          <Route path="/equipment" element={<Equipment />}>
+            <Route index element={<Driller />} />
+            <Route path="driller/:id" element={<Pop />} />
+          </Route>
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 
