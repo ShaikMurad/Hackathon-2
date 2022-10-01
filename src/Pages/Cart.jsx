@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import TopBar from "../Components/TopBar";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import axios from "axios";
+import { env } from "../config";
+import UserContext from "../UserContext";
 const Cart = () => {
+  const { cartData } = useContext(UserContext);
+  useEffect(() => {
+    console.log(cartData);
+  }, []);
   return (
     <div>
       <TopBar />

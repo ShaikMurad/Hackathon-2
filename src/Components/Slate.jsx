@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-
+import UserContext from "../UserContext";
 import { Link } from "react-router-dom";
 
 const Slate = ({ data }) => {
-  const [modal, setModal] = useState(false);
+  let context = useContext(UserContext);
+  const { user } = useContext(UserContext);
   return (
     <>
       <Card className="col-md-3 m-auto mb-4" style={{ width: "18rem" }}>
@@ -13,17 +14,24 @@ const Slate = ({ data }) => {
           style={{ width: "15rem", height: "15rem" }}
           className="mt-3"
           variant="top"
-          src={data.image}
+          src={data.Image}
         />
         <Card.Body>
-          <Card.Title>{data.title}</Card.Title>
-          <Button
-            as={Link}
-            to={`/equipment/driller/${data.id}`}
-            variant="btn btn-outline-info"
-          >
-            Add to Enquiry
-          </Button>
+          <Card.Title>{data.Name}</Card.Title>
+          {user ? (
+            <Button
+              as={Link}
+              to={`/equipment/driller/${data._id}`}
+              variant="btn btn-outline-info"
+            >
+              {" "}
+              Add to Enquiry
+            </Button>
+          ) : (
+            <Button as={Link} to={`/login`} variant="btn btn-outline-info">
+              Add to Enquiry
+            </Button>
+          )}
         </Card.Body>
       </Card>
     </>

@@ -8,7 +8,11 @@ import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
 import Pop from "./Components/Pop";
 import Cart from "./Pages/Cart";
+import Admin from "./Pages/Admin";
 import { UserProvider } from "./UserContext";
+import AddEquipment from "./Components/AddEquipment";
+import EditEquipment from "./Components/EditEquipment";
+import NotFound from "./Components/NotFound";
 function App() {
   return (
     <UserProvider>
@@ -23,6 +27,10 @@ function App() {
             <Route path="driller/:id" element={<Pop />} />
           </Route>
           <Route path="/cart" element={<Cart />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/addEquipment" element={<AddEquipment />} />
+          <Route path="/editEquipment/:id" element={<EditEquipment />} />
+          <Route path="/notfound" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

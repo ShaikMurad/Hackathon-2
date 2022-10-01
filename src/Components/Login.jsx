@@ -28,17 +28,24 @@ const Login = () => {
       AdminKey: "",
     },
     onSubmit: async (values) => {
-      console.log(values);
-      // try {
-      //   let loginData = await axios.post(`${env.api}/login`, values);
-      //   if (loginData.status === 200) {
-      //     window.localStorage.setItem("app-token", loginData.data.token);
-      //     navigate("/equipment");
-      //   }
-      // } catch (err) {
-      //   console.log(err);
-      //   alert(err.response.data.message);
-      // }
+      try {
+        let loginData = await axios.post(`${env.api}/login`, values);
+        console.log(loginData.request.withCredentials);
+        if (loginData.status === 200) {
+          if (loginData.request.withCredentials) {
+            window.localStorage.setItem("app-token", loginData.data.token);
+            if (values.AdminKey) {
+              setAdmin(true);
+            }
+            setUser(values);
+            navigate("/equipment");
+          } else {
+            navigate("/notfound");
+          }
+        }
+      } catch (err) {
+        alert(err.response.data.message);
+      }
     },
   });
   const paperStyle = {
@@ -62,8 +69,8 @@ const Login = () => {
           </Grid>
           <TextField
             className="mt-3"
-            label="Username"
-            placeholder="Enter Username"
+            label="Enter Email"
+            placeholder="Enter Email"
             fullWidth
             required
             value={formik.values.email}

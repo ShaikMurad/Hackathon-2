@@ -1,27 +1,60 @@
-import React from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import { Link } from "react-router-dom";
-
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { useFormik } from "formik";
+import MenuItem from "@mui/material/MenuItem";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import axios from "axios";
+import { env } from "../config";
+import UserContext from "../UserContext";
 const SideBar = () => {
+  const { categoryData, setCategoryData } = useContext(UserContext);
+  const [age, setAge] = useState("");
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  useEffect(() => {
+    getData(age);
+  }, [age]);
+
+  let getData = async (age) => {
+    try {
+      let response = await axios.get(`${env.api}/Equipments`);
+      let category = response.data;
+      let final = [];
+      category.map((el) => {
+        if (el.Category === age) {
+          final.push(el);
+        }
+      });
+      setCategoryData(final);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
-      <Dropdown>
-        <Dropdown.Toggle variant="btn btn-primary" id="dropdown-basic">
-          Category
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item as={Link} to="driller">
-            Crushers & Drillers
-          </Dropdown.Item>
-          <Dropdown.Item as={Link} to="crane">
-            Cranes & Lifts
-          </Dropdown.Item>
-          <Dropdown.Item href="#/action-3">
-            Loaders, Excavators & Tippers
-          </Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Road Equipment</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Category</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={age}
+            label="Category"
+            onChange={handleChange}
+          >
+            <MenuItem value={"crane"}>Crane</MenuItem>
+            <MenuItem value={"Crusher"}>Driller</MenuItem>
+            <MenuItem value={"tractor"}>Tractors</MenuItem>
+            <MenuItem value={"road"}>Road Equipment</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
     </>
   );
 };

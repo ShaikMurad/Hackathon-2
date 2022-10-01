@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { createContext } from "react";
 import axios from "axios";
-// import { env } from "../config";
+import { env } from "./config";
 
 let UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [admin, setAdmin] = useState(false);
+  const [data, setData] = useState([]);
+  const [cartData, setCartData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
   useEffect(() => {
-    // getMentor();
-    // getStudent();
-  }, []);
+    getEquipment();
+  }, [data]);
 
-  //   let getMentor = async () => {
-  //     let response = await axios.get(`${env.api}/mentors`);
-  //     setMentorName(response.data);
-  //   };
-
-  //   let getStudent = async () => {
-  //     let response = await axios.get(`${env.api}/students`);
-  //     setStudentName(response.data);
-  //   };
+  let getEquipment = async () => {
+    try {
+      let response = await axios.get(`${env.api}/Equipments`);
+      setData(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <UserContext.Provider
@@ -30,6 +31,12 @@ export const UserProvider = ({ children }) => {
         setUser,
         admin,
         setAdmin,
+        data,
+        setData,
+        cartData,
+        setCartData,
+        categoryData,
+        setCategoryData,
       }}
     >
       {children}

@@ -11,7 +11,13 @@ import UserContext from "../UserContext";
 const Topbar = () => {
   let context = useContext(UserContext);
   let navigate = useNavigate();
-  const { user, setUser, admin } = useContext(UserContext);
+  const { user, setUser, admin, setAdmin } = useContext(UserContext);
+
+  const logout = () => {
+    setUser(null);
+    setAdmin(false);
+    navigate("/");
+  };
   return (
     <>
       <Navbar
@@ -37,12 +43,28 @@ const Topbar = () => {
               </Nav.Link>
             </Nav>
             <Nav>
-              <Nav.Link as={Link} to="/login">
-                Login-In
-              </Nav.Link>
-              <Nav.Link eventKey={2} as={Link} to="/signup">
-                Sign-Up
-              </Nav.Link>
+              {!user ? (
+                <Nav.Link as={Link} to="/login">
+                  Login
+                </Nav.Link>
+              ) : (
+                ""
+              )}
+              {!user ? (
+                <Nav.Link as={Link} to="/signup">
+                  Sign Up
+                </Nav.Link>
+              ) : (
+                ""
+              )}
+              {user && admin ? (
+                <Nav.Link as={Link} to="/admin">
+                  Admin Access
+                </Nav.Link>
+              ) : (
+                ""
+              )}
+              {user ? <Nav.Link onClick={logout}>Log Out</Nav.Link> : ""}
             </Nav>
           </Navbar.Collapse>
         </Container>

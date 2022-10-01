@@ -20,11 +20,9 @@ import axios from "axios";
 import UserContext from "../UserContext";
 
 const SignUp = () => {
-  let context = useContext(UserContext);
   let navigate = useNavigate();
-  const { setUser, admin, setAdmin } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const [checkAdmin, setCheckAdmin] = useState(false);
-  const [adminKey, setAdminKey] = useState("");
 
   let formik = useFormik({
     initialValues: {
@@ -34,17 +32,21 @@ const SignUp = () => {
       AdminKey: "",
     },
     onSubmit: async (values) => {
-      console.log(values);
-      // try {
-      //   let loginData = await axios.post(`${env.api}/login`, values);
-      //   if (loginData.status === 200) {
-      //     window.localStorage.setItem("app-token", loginData.data.token);
-      //     navigate("/login");
-      //   }
-      // } catch (err) {
-      //   console.log(err);
-      //   alert(err.response.data.message);
-      // }
+      try {
+        let user = await axios.post(`${env.api}/register`, values, {
+          headers: {
+            Authorization: window.localStorage.getItem("app-token"),
+          },
+        });
+        if (user.status === 200) {
+          setUser(values);
+          alert("User Created");
+          navigate("/login");
+        }
+      } catch (err) {
+        console.log(err);
+        alert(err.response.data.message);
+      }
     },
   });
 
