@@ -30,10 +30,9 @@ const Login = () => {
     onSubmit: async (values) => {
       try {
         let loginData = await axios.post(`${env.api}/login`, values);
-        console.log(loginData.request.withCredentials);
         if (loginData.status === 200) {
-          if (loginData.request.withCredentials) {
-            window.localStorage.setItem("app-token", loginData.data.token);
+          window.localStorage.setItem("app-token", loginData.data.token);
+          if (loginData.data.token) {
             if (values.AdminKey) {
               setAdmin(true);
             }

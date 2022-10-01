@@ -10,11 +10,7 @@ const NotFound = () => {
         <h1>Sorry</h1>
         <h2>Credentials Wrong</h2>
       </div>
-      <Button
-        onClick={() => navigate("/signup")}
-        type="submit"
-        color="secondary"
-      >
+      <Button onClick={() => navigate("/")} type="submit" color="secondary">
         Go to signup
       </Button>
     </div>
