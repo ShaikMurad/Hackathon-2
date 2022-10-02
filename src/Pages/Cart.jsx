@@ -49,30 +49,32 @@ const Cart = () => {
       ) : (
         <div className="container">
           <Card
-            className="col-md-3 m-auto mb-4 text-center"
+            className="col-md-3 m-auto mb-4 text-center overflow-auto "
             style={{ width: "100%" }}
           >
             <Card.Body>
               <Card.Title>
                 <h1>Summary</h1>
               </Card.Title>
-              <Table striped bordered hover>
+              <Table className="" striped bordered hover>
                 <thead className="align-middle">
                   <tr>
-                    <th>Equipment</th>
-                    <th>Equipment Name</th>
-                    <th>
+                    <th scope="col">#</th>
+                    <th scope="col">Equipment</th>
+                    <th scope="col">Equipment Name</th>
+                    <th scope="col">
                       Price <br /> <small>for 1hour</small>
                     </th>
-                    <th>Quantity</th>
-                    <th>Rental Period</th>
-                    <th>Total</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Rental Period</th>
+                    <th scope="col">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   {cartData.map((el, i) => {
                     return (
                       <tr key={i} className="align-middle">
+                        <th scope="row">{i + 1}</th>
                         <td>
                           <img
                             style={{ width: 100, height: 100 }}
