@@ -11,12 +11,14 @@ import UserContext from "../UserContext";
 const Topbar = () => {
   let context = useContext(UserContext);
   let navigate = useNavigate();
-  const { user, setUser, admin, setAdmin } = useContext(UserContext);
+  const { user, setUser, admin, setAdmin, userName, setCartData } =
+    useContext(UserContext);
 
   const logout = () => {
     setUser(null);
     setAdmin(false);
     navigate("/");
+    setCartData(null);
   };
   return (
     <>
@@ -57,14 +59,37 @@ const Topbar = () => {
               ) : (
                 ""
               )}
+              {user ? (
+                <Nav.Link>
+                  <b>
+                    Welcome <br />
+                    <div className="px-3">{userName}</div>
+                  </b>
+                </Nav.Link>
+              ) : (
+                ""
+              )}
               {user && admin ? (
-                <Nav.Link as={Link} to="/admin">
+                <Nav.Link className="m-auto" as={Link} to="/admin">
                   Admin Access
                 </Nav.Link>
               ) : (
                 ""
               )}
-              {user ? <Nav.Link onClick={logout}>Log Out</Nav.Link> : ""}
+              {user ? (
+                <Nav.Link className="m-auto" as={Link} to="/cart">
+                  View Cart
+                </Nav.Link>
+              ) : (
+                ""
+              )}
+              {user ? (
+                <Nav.Link className="m-auto" onClick={logout}>
+                  Log Out
+                </Nav.Link>
+              ) : (
+                ""
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -12,7 +12,7 @@ import UserContext from "../UserContext";
 const AddEquipment = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const { data } = useContext(UserContext);
+  const { data, setData } = useContext(UserContext);
   useEffect(() => {
     getUser(params.id);
   }, [data]);
@@ -54,13 +54,17 @@ const AddEquipment = () => {
       return errors;
     },
     onSubmit: async (values) => {
-      console.log(values);
-      await axios.put(`${env.api}/Equipment/${params.id}`, values, {
-        headers: {
-          Authorization: window.localStorage.getItem("app-token"),
-        },
-      });
+      let response = await axios.put(
+        `${env.api}/Equipment/${params.id}`,
+        values,
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("app-token"),
+          },
+        }
+      );
       alert("Equipment Edited");
+      setData(response.data);
       navigate("/admin");
     },
   });

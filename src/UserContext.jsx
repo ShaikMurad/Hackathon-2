@@ -7,13 +7,14 @@ let UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userName, setUserName] = useState(null);
   const [admin, setAdmin] = useState(false);
   const [data, setData] = useState([]);
   const [cartData, setCartData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   useEffect(() => {
     getEquipment();
-  }, [data]);
+  }, []);
 
   let getEquipment = async () => {
     try {
@@ -37,6 +38,8 @@ export const UserProvider = ({ children }) => {
         setCartData,
         categoryData,
         setCategoryData,
+        userName,
+        setUserName,
       }}
     >
       {children}

@@ -9,21 +9,16 @@ import { env } from "../config";
 const AdminBoard = ({ data }) => {
   const [active, setActive] = useState([]);
   const [count, setCount] = useState(0);
+  const { setData } = useContext(UserContext);
 
   let userDelete = async (id) => {
     try {
-      await axios.delete(`${env.api}/Equipment/${id}`);
-      let user = active.findIndex((el) => el.id === id);
-      active.splice(user, 1);
-      setCount((c) => c + 1);
+      let response = await axios.delete(`${env.api}/Equipment/${id}`);
+      setData(response.data);
     } catch (e) {
       console.log(e);
     }
   };
-
-  useEffect(() => {
-    setActive(active);
-  }, [data]);
 
   return (
     <>

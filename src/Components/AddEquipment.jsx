@@ -7,11 +7,12 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { env } from "../config";
 import { useParams, useNavigate } from "react-router-dom";
+import UserContext from "../UserContext";
 
 const AddEquipment = () => {
   const params = useParams();
   const navigate = useNavigate();
-
+  const { setData } = useContext(UserContext);
   const formik = useFormik({
     initialValues: {
       Name: "",
@@ -33,6 +34,7 @@ const AddEquipment = () => {
     onSubmit: async (values) => {
       let user = await axios.post(`${env.api}/Equipment`, values);
       alert("Equipment Created");
+      setData(user.data);
       navigate("/admin");
     },
   });

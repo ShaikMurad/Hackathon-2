@@ -31,7 +31,8 @@ const Pop = () => {
   const [currency, setCurrency] = useState("EUR");
   const [userData, setUserData] = useState([]);
   let context = useContext(UserContext);
-  const { data, user, setCartData, cartData } = useContext(UserContext);
+  const { data, user, setCartData, cartData, userName } =
+    useContext(UserContext);
 
   // Getting the Particular Equipment
   useEffect(() => {
@@ -50,6 +51,8 @@ const Pop = () => {
   const formik = useFormik({
     initialValues: {
       Name: "",
+      Image: "",
+      Price: "",
       Capacity: "",
       Quantity: "",
       Rental: "",
@@ -57,13 +60,30 @@ const Pop = () => {
       From: "",
       To: "",
     },
+    validate: (values) => {
+      let errors = {};
+      if (values.Capacity === "") {
+        errors.Capacity = "Please enter Capacity ";
+      }
+      if (values.Quantity === "") {
+        errors.Quantity = "Please enter Quantity";
+      }
+      if (values.Rental === "") {
+        errors.Rental = "Please enter Rental";
+      }
+      if (values.Period === "") {
+        errors.Period = "Please enter Period";
+      }
+      return errors;
+    },
     onSubmit: async (values) => {
-      formik.values.Name = user.email;
-      console.log(values);
-      let updatedCart = [...cartData];
+      formik.values.user = userName;
+      formik.values.Name = userData.Name;
+      formik.values.Image = userData.Image;
+      formik.values.Price = userData.Price;
+      const updatedCart = [...cartData];
       updatedCart.push(values);
       setCartData(updatedCart);
-      console.log(cartData);
       alert("Enquiry Added");
     },
   });
@@ -106,7 +126,9 @@ const Pop = () => {
               value={formik.values.Capacity}
               onChange={formik.handleChange}
               name="Capacity"
+              helperText={formik.errors.Capacity}
             />
+
             <TextField
               type="number"
               id="outlined-uncontrolled"
@@ -114,6 +136,7 @@ const Pop = () => {
               value={formik.values.Quantity}
               onChange={formik.handleChange}
               name="Quantity"
+              helperText={formik.errors.Quantity}
             />
           </Box>
           <Box
@@ -131,7 +154,9 @@ const Pop = () => {
               value={formik.values.Rental}
               onChange={formik.handleChange}
               name="Rental"
+              helperText={formik.errors.Rental}
             />
+
             <TextField
               id="outlined-select-currency"
               select
@@ -139,7 +164,7 @@ const Pop = () => {
               value={formik.values.Period}
               onChange={formik.handleChange}
               name="Period"
-              helperText="Please select your Period"
+              helperText={formik.errors.Period}
             >
               {currencies.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -173,7 +198,12 @@ const Pop = () => {
         </Modal.Body>
 
         <Modal.Footer className="mt-5 mb-5">
-          <Button value="Submit" type="submit" variant="primary">
+          <Button
+            disabled={!formik.isValid}
+            value="Submit"
+            type="submit"
+            variant="primary"
+          >
             Add to Cart
           </Button>
           <Button className="mx-3" as={Link} to="/cart" variant="primary">

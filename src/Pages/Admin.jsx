@@ -13,6 +13,9 @@ const Admin = () => {
         <Link to="/addEquipment" type="button" className="btn btn-primary mt-4">
           Add Equipment
         </Link>
+        <Link to="/order" type="button" className="btn btn-primary mt-4 mx-3">
+          Order Page
+        </Link>
       </div>
       <div className="container">
         <div className="row mt-5 ">

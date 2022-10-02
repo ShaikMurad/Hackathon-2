@@ -82,13 +82,19 @@ const SignUp = () => {
             onChange={formik.handleChange}
             name="email"
           />
-          <TextField className="mb-3" fullWidth label="Password" />
+          <TextField
+            className="mb-3"
+            type="password"
+            fullWidth
+            label="Password"
+          />
           <TextField
             fullWidth
             label="Confirm Password"
             value={formik.values.password}
             onChange={formik.handleChange}
             name="password"
+            type="password"
           />
           {checkAdmin && (
             <TextField
@@ -108,10 +114,8 @@ const SignUp = () => {
             <Checkbox onClick={() => setCheckAdmin(!checkAdmin)} /> Click if
             Admin
           </span>
-          <FormControlLabel
-            control={<Checkbox name="checkedB" color="primary" />}
-            label="I accept the terms and conditions"
-          />
+          <br />
+
           <Button type="submit" variant="contained" color="primary">
             sign up
           </Button>

@@ -13,6 +13,7 @@ import { UserProvider } from "./UserContext";
 import AddEquipment from "./Components/AddEquipment";
 import EditEquipment from "./Components/EditEquipment";
 import NotFound from "./Components/NotFound";
+import OrdersPage from "./Pages/OrdersPage";
 function App() {
   return (
     <UserProvider>
@@ -31,6 +32,7 @@ function App() {
           <Route path="/addEquipment" element={<AddEquipment />} />
           <Route path="/editEquipment/:id" element={<EditEquipment />} />
           <Route path="/notfound" element={<NotFound />} />
+          <Route path="/order" element={<OrdersPage />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

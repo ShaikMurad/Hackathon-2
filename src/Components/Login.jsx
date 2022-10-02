@@ -18,7 +18,7 @@ import axios from "axios";
 const Login = () => {
   let context = useContext(UserContext);
   let navigate = useNavigate();
-  const { setUser, admin, setAdmin } = useContext(UserContext);
+  const { setUser, admin, setAdmin, setUserName } = useContext(UserContext);
   const [checkAdmin, setCheckAdmin] = useState(false);
 
   let formik = useFormik({
@@ -30,12 +30,18 @@ const Login = () => {
     onSubmit: async (values) => {
       try {
         let loginData = await axios.post(`${env.api}/login`, values);
+
         if (loginData.status === 200) {
-          window.localStorage.setItem("app-token", loginData.data.token);
-          if (loginData.data.token) {
+          window.localStorage.setItem(
+            "app-token",
+            loginData.data.userValues.token
+          );
+          if (loginData.data.userValues.token) {
             if (values.AdminKey) {
               setAdmin(true);
             }
+
+            setUserName(loginData.data.userValues.name);
             setUser(values);
             navigate("/equipment");
           } else {
@@ -114,9 +120,7 @@ const Login = () => {
           >
             Sign in
           </Button>
-          <Typography>
-            <Link href="#">Forgot password ?</Link>
-          </Typography>
+
           <Typography>
             Do you have an account ?<Link href="/signup">Sign up</Link>
           </Typography>
