@@ -95,6 +95,16 @@ const Cart = () => {
                   })}
                 </tbody>
               </Table>
+              <p>
+                <h3>Test Case</h3>
+              </p>
+              <b>Card Number</b> : 4242 4242 4242 4242
+              <br />
+              <b>MM/YY</b> : 04 / 24
+              <br />
+              <b>CVV</b> : 242
+              <br />
+              <b>ZIP</b> : 42424
               <CheckoutForm />
             </Card.Body>
           </Card>
