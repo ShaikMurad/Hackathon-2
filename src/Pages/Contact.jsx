@@ -104,7 +104,14 @@ const Contact = () => {
                   </div>
                 </div>
                 <div class="text-center text-md-left mt-4">
-                  <a class="btn btn-primary">Send</a>
+                  <a
+                    onClick={() => {
+                      alert("We will get back to you shortly");
+                    }}
+                    class="btn btn-primary"
+                  >
+                    Send
+                  </a>
                 </div>
               </form>
             </div>
