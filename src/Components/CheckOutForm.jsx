@@ -11,7 +11,7 @@ import UserContext from "../UserContext";
 import axios from "axios";
 import { env } from "../config";
 
-const CheckoutForm = ({ totalPrice }) => {
+const CheckoutForm = ({ totalOrder }) => {
   const { cartData, userName, user } = useContext(UserContext);
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState("");
@@ -26,14 +26,19 @@ const CheckoutForm = ({ totalPrice }) => {
     "pk_test_51K11LVSEPEmhN4c2o2qQmMK7N07mPHzJMmSy5CpwXb9mgbTRotBNrxl9lnWiY6qkbEVz3PQbIqNKdwhyqMhTGwLw003V1gclUL"
   );
 
+  // useEffect(() => {
+  //   console.log(cartDatas(cartData));
+  // }, []);
+
   async function handlePay(e, elements, stripe) {
     e.preventDefault();
     if (!stripe || !elements) return;
 
     const orderData = {
-      ...cartData[0],
+      cartData,
       address,
       country,
+      totalAmount: totalOrder,
     };
 
     const cardElement = elements.getElement(CardElement);
@@ -46,12 +51,8 @@ const CheckoutForm = ({ totalPrice }) => {
     if (error) console.log(error);
     else {
       setAlertMessage("Payment success");
-      try {
-        let order = cartData[0];
-        let user = await axios.post(`${env.api}/order`, orderData);
-      } catch (err) {
-        console.log(err);
-      }
+      let user = await axios.post(`${env.api}/final`, orderData);
+
       //   const orderConfirmation = await dispatch(placeOrder(orderData));
       //   if (orderConfirmation) {
       //     dispatch(updateUser(user._id));
@@ -79,7 +80,7 @@ const CheckoutForm = ({ totalPrice }) => {
                     <Form.Control
                       type="text"
                       placeholder="First Name"
-                      value={userName}
+                      value={window.localStorage.getItem("user")}
                       disabled
                     />
                   </Form.Group>

@@ -3,15 +3,9 @@ import Slate from "./Slate";
 import UserContext from "../UserContext";
 
 const Driller = () => {
-  const { categoryData, data } = useContext(UserContext);
+  const { categoryData } = useContext(UserContext);
 
-  return categoryData[0] === undefined ? (
-    <div className="row mt-5 ">
-      {data.map((el, i) => {
-        return <Slate key={i} data={el} />;
-      })}
-    </div>
-  ) : (
+  return (
     <div className="row mt-5 ">
       {categoryData.map((el, i) => {
         return <Slate key={i} data={el} />;

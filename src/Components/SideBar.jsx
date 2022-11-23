@@ -25,12 +25,16 @@ const SideBar = () => {
       let response = await axios.get(`${env.api}/Equipments`);
       let category = response.data;
       let final = [];
-      category.map((el) => {
-        if (el.Category === age) {
-          final.push(el);
-        }
-      });
-      setCategoryData(final);
+      if (age === "") {
+        setCategoryData(category);
+      } else {
+        category.map((el) => {
+          if (el.Category === age) {
+            final.push(el);
+          }
+        });
+        setCategoryData(final);
+      }
     } catch (e) {
       console.log(e);
     }

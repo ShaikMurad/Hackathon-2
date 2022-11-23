@@ -67,7 +67,6 @@ const Home = () => {
                 <div className=" ">
                   <Link
                     to="/signup"
-                    a
                     className="btn btn-outline-primary col-md-3"
                   >
                     SIGN UP

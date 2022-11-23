@@ -3,18 +3,28 @@ import TopBar from "../Components/TopBar";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
 import { env } from "../config";
+import { ClickAwayListener } from "@mui/material";
 
 const OrdersPage = () => {
   const [order, setOrder] = useState([]);
-
+  const [ordertotal, setOrdertotal] = useState([]);
   useEffect(() => {
-    getEquipment();
+    getFinalOrder();
   }, []);
 
-  let getEquipment = async () => {
+  let getFinalOrder = async () => {
     try {
-      let response = await axios.get(`${env.api}/orders`);
-      setOrder(response.data);
+      let response = await axios.get(`${env.api}/finals`);
+      let orderArr = response.data;
+      let totalAmount = orderArr.map((el) => {
+        return el.totalAmount;
+      });
+      setOrdertotal(totalAmount);
+      let final = [];
+      orderArr.map((el) => {
+        final = el.cartData;
+      });
+      setOrder(final);
     } catch (err) {
       console.log(err);
     }
@@ -29,15 +39,19 @@ const OrdersPage = () => {
             <th>User</th>
             <th>Equipment Name</th>
             <th>Quantity</th>
+            <th>Period</th>
+            <th>PricePaid</th>
           </tr>
         </thead>
         <tbody>
-          {order.map((el) => {
+          {order.map((el, i) => {
             return (
-              <tr className="align-middle">
+              <tr key={i} className="align-middle">
                 <td>{el.user}</td>
                 <td>{el.Name}</td>
                 <td>{el.Quantity}</td>
+                <td>{`${el.Rental} ${el.Period}`}</td>
+                <td>{ordertotal[i]}</td>
               </tr>
             );
           })}

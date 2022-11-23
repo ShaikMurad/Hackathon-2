@@ -1,3 +1,6 @@
 export const env = {
-  api: "https://equiphunter.herokuapp.com",
+  api: "http://localhost:8000",
 };
+
+// http://localhost:8000
+// https://equiphunter.herokuapp.com

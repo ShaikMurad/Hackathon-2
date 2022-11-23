@@ -3,9 +3,22 @@ import { Link } from "react-router-dom";
 import AdminBoard from "../Components/AdminBoard";
 import TopBar from "../Components/TopBar";
 import UserContext from "../UserContext";
+import axios from "axios";
+import { env } from "../config";
 const Admin = () => {
-  const { data } = useContext(UserContext);
+  const { data, setData } = useContext(UserContext);
+  useEffect(() => {
+    getEquipment();
+  }, []);
 
+  let getEquipment = async () => {
+    try {
+      let response = await axios.get(`${env.api}/Equipments`);
+      setData(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       <TopBar />

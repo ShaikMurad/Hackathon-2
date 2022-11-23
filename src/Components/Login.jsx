@@ -30,23 +30,21 @@ const Login = () => {
     onSubmit: async (values) => {
       try {
         let loginData = await axios.post(`${env.api}/login`, values);
-
         if (loginData.status === 200) {
           window.localStorage.setItem(
             "app-token",
             loginData.data.userValues.token
           );
-          if (loginData.data.userValues.token) {
-            if (values.AdminKey) {
-              setAdmin(true);
-            }
-
-            setUserName(loginData.data.userValues.name);
-            setUser(values);
-            navigate("/equipment");
-          } else {
-            navigate("/notfound");
+          if (values.AdminKey) {
+            window.localStorage.setItem("Admin", values.AdminKey);
+            setAdmin(true);
           }
+
+          window.localStorage.setItem("user", loginData.data.userValues.name);
+          setUser(values);
+          navigate("/equipment");
+        } else {
+          navigate("/notfound");
         }
       } catch (err) {
         alert(err.response.data.message);

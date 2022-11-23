@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { createContext } from "react";
-import axios from "axios";
-import { env } from "./config";
 
 let UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(1);
   const [userName, setUserName] = useState(null);
   const [admin, setAdmin] = useState(false);
   const [data, setData] = useState([]);
   const [cartData, setCartData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
-  useEffect(() => {
-    getEquipment();
-  }, []);
-
-  let getEquipment = async () => {
-    try {
-      let response = await axios.get(`${env.api}/Equipments`);
-      setData(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [total, setTotal] = useState(0);
 
   return (
     <UserContext.Provider
@@ -40,6 +27,8 @@ export const UserProvider = ({ children }) => {
         setCategoryData,
         userName,
         setUserName,
+        total,
+        setTotal,
       }}
     >
       {children}

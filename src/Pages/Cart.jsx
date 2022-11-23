@@ -7,44 +7,22 @@ import axios from "axios";
 import { env } from "../config";
 import UserContext from "../UserContext";
 import CheckoutForm from "../Components/CheckOutForm";
-const Cart = () => {
-  const { cartData } = useContext(UserContext);
-  let [total, setTotal] = useState(0);
-  let addOrder = async () => {
-    try {
-      let order = cartData[0];
-      let user = await axios.post(`${env.api}/order`, order);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  const priceCalculator = (price, rent, period) => {
-    if (period === "Days") {
-      let x = parseInt(rent);
-      let x1 = x * 24;
-      let y = parseInt(price);
-      let xy = x1 * y;
-      return xy;
-    } else if (period === "Months") {
-      let x = parseInt(rent);
-      let y = parseInt(price);
-      let x1 = x * 24 * 30;
-      let xy = x1 * y;
-      return xy;
-    } else if (period === "Years") {
-      let x = parseInt(rent);
-      let y = parseInt(price);
-      let x1 = x * 24 * 30 * 12;
-      let xy = x1 * y;
-      return xy;
+const Cart = () => {
+  const { cartData, total, setTotal } = useContext(UserContext);
+  const [totalOrder, setTotalOrder] = useState(0);
+  useEffect(() => {
+    if (cartData && cartData.length > 0) {
+      setTotalOrder(
+        cartData.map((el) => el.TotalPrice).reduce((acc, item) => acc + item)
+      );
     }
-  };
+  }, [cartData]);
 
   return (
     <div>
       <TopBar />
-      {cartData[0] === undefined ? (
+      {!cartData || cartData.length === 0 ? (
         <div className="container text-center mt-5">No item in the Cart</div>
       ) : (
         <div className="container">
@@ -86,20 +64,16 @@ const Cart = () => {
                         <td>{`$ ${el.Price}`}</td>
                         <td>{el.Quantity}</td>
                         <td>{`${el.Rental} ${el.Period}`}</td>
-                        <td>
-                          {`$ ${
-                            Number(el.Quantity) *
-                            priceCalculator(el.Price, el.Rental, el.Period)
-                          }`}
-                        </td>
+                        <td>{`$ ${el.TotalPrice}`}</td>
                       </tr>
                     );
                   })}
                 </tbody>
               </Table>
-              <p>
+              <div className="cart-total">Total : {totalOrder}</div>
+              <div className="mt-5 mb-4">
                 <h3>Test Case</h3>
-              </p>
+              </div>
               <b>Card Number</b> : 4242 4242 4242 4242
               <br />
               <b>MM/YY</b> : 04 / 24
@@ -107,7 +81,7 @@ const Cart = () => {
               <b>CVV</b> : 242
               <br />
               <b>ZIP</b> : 42424
-              <CheckoutForm />
+              <CheckoutForm totalOrder={totalOrder} />
             </Card.Body>
           </Card>
         </div>

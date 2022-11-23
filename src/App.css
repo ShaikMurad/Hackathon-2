@@ -138,4 +138,9 @@
   font-size: 50px;
 }
 
-@import url("https://cdn.syncfusion.com/ej2/material.css");
+.cart-total {
+  font-size: 25px;
+  font-weight: bold;
+  position: absolute;
+  right: 100px;
+}

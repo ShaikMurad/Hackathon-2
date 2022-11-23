@@ -25,19 +25,19 @@ const currencies = [
     label: "Days",
   },
 ];
+
 const Pop = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [currency, setCurrency] = useState("EUR");
+  const [subPrice, setSubPrice] = useState(0);
   const [userData, setUserData] = useState([]);
   let context = useContext(UserContext);
-  const { data, user, setCartData, cartData, userName } =
-    useContext(UserContext);
+  const { data, setCartData, cartData, userName } = useContext(UserContext);
 
   // Getting the Particular Equipment
   useEffect(() => {
     getUser(params.id);
-  }, [data]);
+  }, []);
 
   let getUser = async (id) => {
     try {
@@ -53,6 +53,7 @@ const Pop = () => {
       Name: "",
       Image: "",
       Price: "",
+      TotalPrice: "",
       Capacity: "",
       Quantity: "",
       Rental: "",
@@ -77,17 +78,15 @@ const Pop = () => {
       return errors;
     },
     onSubmit: async (values) => {
-      formik.values.user = userName;
+      formik.values.user = window.localStorage.getItem("user");
       formik.values.Name = userData.Name;
       formik.values.Image = userData.Image;
       formik.values.Price = userData.Price;
-      const updatedCart = [...cartData];
-      updatedCart.push(values);
-      setCartData(updatedCart);
+      let user = await axios.post(`${env.api}/order`, values);
+      setCartData(user.data);
       alert("Enquiry Added");
     },
   });
-
   return (
     <Modal.Dialog className="mt-5">
       <form onSubmit={formik.handleSubmit}>
@@ -113,11 +112,9 @@ const Pop = () => {
           <p>{userData.About}</p>
           <p className="mt-4"> Specify your requirements.</p>
           <Box
-            component="form"
             sx={{
               "& > :not(style)": { m: 1, width: "25ch" },
             }}
-            noValidate
             autoComplete="off"
           >
             <TextField
@@ -140,11 +137,9 @@ const Pop = () => {
             />
           </Box>
           <Box
-            component="form"
             sx={{
               "& > :not(style)": { m: 1, width: "25ch" },
             }}
-            noValidate
             autoComplete="off"
           >
             <TextField
@@ -174,7 +169,7 @@ const Pop = () => {
             </TextField>
           </Box>
           <Box>
-            <label for="birthdaytime">From</label>
+            <label htmlFor="birthdaytime">From</label>
             <br />
             <input
               type="datetime-local"
@@ -185,7 +180,7 @@ const Pop = () => {
             />
           </Box>
           <Box>
-            <label for="birthdaytime">To</label>
+            <label htmlFor="birthdaytime">To</label>
             <br />
             <input
               type="datetime-local"
