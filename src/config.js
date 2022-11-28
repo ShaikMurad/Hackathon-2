@@ -1,5 +1,5 @@
 export const env = {
-  api: "https://equiphunter.herokuapp.com",
+  api: "https://hackathon2-server.vercel.app",
 };
 
 // http://localhost:8000
